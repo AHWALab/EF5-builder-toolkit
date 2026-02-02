@@ -133,7 +133,7 @@ To create a distributed model using EF5 tasks like `CLIP_GAUGE` and `BASIN_AVG`,
 * **For Water Balance (CREST)**
 
 1. Soil texture rasters: Percent Sand, Percent Clay, and Percent Silt.
-> You can access to these files in [soilgrids.org](https://soilgrids.org/) 
+> You can access to these files in [soilgrids.org](https://files.isric.org/soilgrids/former/2017-03-10/data/) 
 
 2. Depth to bedrock raster in meters
 
