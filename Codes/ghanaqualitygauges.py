@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Codigo para saber la calidad de los datos de ghana
+Code permettant d'évaluer la qualité des données du Ghana
 @author: vrobledodelgado
 """
 
 
-#Libraries
+#Bibliothèques
 import numpy as np
 import pandas as pd
 from datetime import timedelta
@@ -19,7 +19,7 @@ def read_process_data(file):
     try:
         data = pd.read_csv(file, delimiter=';') 
     except:
-        print('Can not open: '+file[len(prefix):])
+        print('Impossible d\'ouvrir : '+file[len(prefix):])
         pass
     
     if file.startswith("./GaugeStations/gauges/15"):
@@ -32,7 +32,7 @@ def read_process_data(file):
     data.set_index('date', inplace=True)
     data.sort_index(inplace=True)
     
-    # Reemplaza los valores vacíos con NaN
+    # Remplace les valeurs vides par NaN
     data['discharge'] = pd.to_numeric(data['discharge'], errors='coerce')
     data['discharge'] = data['discharge'].replace(-999.000, np.NaN)
     data.to_csv(mydir+"fixeddata/"+file[len(prefix):])
@@ -42,13 +42,13 @@ def figure(file,data,init,end,nanpercentage):
     fig = plt.subplots(figsize=(16, 5))
     plt.plot(data.index, data['discharge'], label=file[len(prefix):])
     plt.xlabel('Date', fontsize=15)
-    plt.ylabel('Discharge (m^3/s)',fontsize=15)
+    plt.ylabel('Débit (m^3/s)',fontsize=15)
     plt.xticks(rotation=30, fontsize=15)
     plt.xlim(init, end)
     plt.title(file[len(prefix):])
-   # plt.text(0.5, 0.9, f"Start Date: {init}\nEnd Date: {end}\nNaN percentage: {nanpercentage}", 
+   # plt.text(0.5, 0.9, f"Date de début : {init}\nDate de fin : {end}\nPourcentage de NaN : {nanpercentage}", 
     #         fontsize=10, bbox=dict(facecolor='white', alpha=0.5))
-    plt.text(0.05, 0.95, f"Start Date: {init}\nEnd Date: {end}\nNaN percentage: {nanpercentage}", 
+    plt.text(0.05, 0.95, f"Date de début : {init}\nDate de fin : {end}\nPourcentage de NaN : {nanpercentage}", 
          fontsize=10, bbox=dict(facecolor='white', alpha=0.5), transform=plt.gca().transAxes,
          verticalalignment='top')
     ax = plt.gca()
@@ -57,23 +57,23 @@ def figure(file,data,init,end,nanpercentage):
     plt.savefig(mydir+"plots/"+file[len(prefix):]+'.png',bbox_inches='tight')
     plt.show()
 
-#read all the files
+#lire tous les fichiers
 mydir = "./GaugeStations/gauges/"
 file_list = glob.glob(mydir + "*.txt")
 print((file_list))
 prefix = './GaugeStations/gauges/'
     
 for file in file_list:
-    print('Opening: ' + file[len(prefix):])
+    print('Ouverture : ' + file[len(prefix):])
     data = read_process_data(file)
-    #count nan values
+    #compter les valeurs nan
     nan_count = data['discharge'].isnull().sum()
-    #calculando porcentaje de faltantes
+    #calcul du pourcentage de valeurs manquantes
     nonulldata = data['discharge'].notnull().sum()
     totaldata = len(data)
     nanpercentage = (nan_count*100)/totaldata
-    print('nan percentage: ',nanpercentage)
+    print('pourcentage de nan : ',nanpercentage)
     init = data.index[0]
     end = data.index[-1]
-    print("init: ",init ,' ends: ',end)
+    print("début : ",init ,' fin : ',end)
     figure(file,data,init,end,nanpercentage)

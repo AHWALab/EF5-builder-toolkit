@@ -20,14 +20,14 @@ FREQ=1m
 LOC=/data/pet/
 NAME=PET.MM.tif
 
-##-----Gauge Block----
+##-----Bloc des stations (Gauge)----
 
 [gauge 0] lat=39.93 lon=-91.42
 
 [Basin 0]
 gauge=0
 
-##-----Gauge Block----
+##-----Bloc des stations (Gauge)----
 
 
 [CrestParamSet CREST]
