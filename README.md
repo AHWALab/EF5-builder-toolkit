@@ -1,67 +1,62 @@
-# Construire un modèle EF5 : guide pas à pas
+# Building an EF5 Model: A Step-by-Step Guide
 
-Un guide complet pour construire et mettre en œuvre un modèle EF5 depuis le début, avec Python et des notebooks Jupyter.
+A complete guide to constructing and implementing an EF5 model from scratch using Python and Jupyter Notebooks.
 
-> **Version française.** Ce dépôt est la traduction française de la branche `main` (EF5-builder-toolkit). Le code, les noms de variables, les chemins de fichiers et les noms de blocs du fichier de contrôle EF5 restent inchangés : seuls les textes explicatifs, les commentaires et les messages affichés ont été traduits.
+## Overview
+This repository provides a step-by-step guide for setting up an EF5 model configuration. The included code and resources are designed to help users build a functional model for their own watershed. The methodology outlined here has been successfully used to create EF5 models at various resolutions for regions like Ghana, West Africa, and Iowa, USA.
 
-## Vue d'ensemble
+The core of the EF5 model is the **control file**, which defines all the input data and parameters. This guide is structured around filling out the necessary blocks within this control file.
 
-Ce dépôt fournit un guide pas à pas pour configurer un modèle EF5. Le code et les ressources qu'il contient sont conçus pour aider les utilisateurs à construire un modèle opérationnel sur leur propre bassin versant. La méthodologie présentée ici a déjà servi à créer des modèles EF5 à différentes résolutions pour des régions telles que le Ghana, l'Afrique de l'Ouest et l'Iowa (États-Unis).
+For a comprehensive understanding of EF5, please refer to the official documentation: [EF5 User Manual](https://ef5docs.readthedocs.io/).
 
-Le cœur du modèle EF5 est le **fichier de contrôle** (control file), qui définit l'ensemble des données d'entrée et des paramètres. Ce guide est organisé autour du remplissage des blocs successifs de ce fichier de contrôle.
-
-Pour une compréhension approfondie d'EF5, veuillez consulter la documentation officielle : [Manuel de l'utilisateur EF5](https://ef5docs.readthedocs.io/).
-
-Pour toute question, contactez Vanessa Robledo (vanessa-robledodelgado@uiowa.edu) ou l'équipe de développement du [laboratoire AHWA](https://ahwa.lab.uiowa.edu) à l'adresse [engr-ahwa-lab@uiowa.edu](mailto:engr-ahwa-lab@uiowa.edu).
+For any questions, contact Vanessa Robledo (vanessa-robledodelgado@uiowa.edu) or the [AHWA Laboratory](https://ahwa.lab.uiowa.edu) Development team at [engr-ahwa-lab@uiowa.edu](mailto:engr-ahwa-lab@uiowa.edu).
 
 ---
 
-## Prérequis
+## Prerequisites
 
-Vous avez deux possibilités pour exécuter le code de ce guide :
+You have two options for running the code in this guide:
 
-#### 1. Google Colaboratory (recommandé)
+#### 1. Google Colaboratory (Recommended)
+The easiest way to get started is with Google Colab, as all notebooks are adapted to run in that environment.
+- **Link:** [https://colab.research.google.com/](https://colab.research.google.com/)
 
-La façon la plus simple de démarrer est d'utiliser Google Colab, car tous les notebooks sont adaptés à cet environnement.
-- **Lien :** [https://colab.research.google.com/](https://colab.research.google.com/)
+#### 2. Local Conda Environment
+If you prefer to work on your local machine, we recommend creating a new Conda environment to avoid package conflicts.
 
-#### 2. Environnement Conda local
-
-Si vous préférez travailler sur votre propre machine, nous recommandons de créer un nouvel environnement Conda afin d'éviter les conflits entre paquets.
-
-1.  **Créez l'environnement à partir du fichier fourni :**
-    Le fichier `environment.yml` se trouve dans le dossier `/prerequisites`. Exécutez la commande suivante dans votre terminal :
+1.  **Create the environment from the provided file:**
+    The `environment.yml` file is located in the `/prerequisites` folder. Run the following command in your terminal:
     ```sh
     conda env create -f prerequisites/environment.yml
     ```
-    *(Cette opération peut prendre plusieurs minutes.)*
+    *(This process may take several minutes.)*
 
-2.  **Activez le nouvel environnement :**
+2.  **Activate the new environment:**
     ```sh
     conda activate ef5_env
     ```
 
 ---
 
-## Structure du projet
+## Project Structure
 
-Tous les fichiers nécessaires sont organisés dans les dossiers suivants :
+All necessary files are organized into the following folders:
 
--   **/Codes :** contient tous les notebooks Jupyter, un par étape.
--   **/Prerequisites :** contient le fichier d'environnement Conda.
+-   **/Codes:** Contains all Jupyter Notebooks for each step.
+-   **/Prerequisites:** Includes the Conda environment file.
 
 ---
 
-## Instructions pas à pas
+## Step-by-Step Instructions
 
-Les étapes suivantes vous guident dans la production des fichiers d'entrée requis par le modèle EF5, en prenant les blocs du fichier de contrôle comme fil conducteur.
+The following steps will walk you through generating the required input files for the EF5 model, using the control file blocks as our guide.
 
 
-### Étape 1 : obtenir les fichiers de base
+### Step 1: Getting the basic files
 
-Cette première étape crée les grilles de base qu'EF5 utilise pour définir le maillage de calcul : le modèle numérique de terrain (DEM), la grille de direction d'écoulement (DDM) et la grille d'accumulation d'écoulement (FAM).
+This first step creates the basic grid files that EF5 employs to define the computational mesh: the Digital Elevation Model (DEM), Flow Direction Model (DDM), and Flow Accumulation Model (FAM).
 
-**Bloc du fichier de contrôle EF5 :**
+**EF5 Control File Block:**
 ```
 [Basic]
 DEM=data/basic/dem.tif
@@ -71,26 +66,26 @@ PROJ=geographic
 ESRIDDM=true
 SelfFAM=false
 ```
-Plusieurs approches sont possibles, notamment à partir de QGIS ou d'ArcGIS. Dans ce tutoriel, vous avez deux options selon les données dont vous disposez :
+Users have several options such as QGIS or ArcGIS based methodologies. However, in this tutorial you have two options depending on your available data:
 
-* **Option A : utiliser les données HydroSHEDS**
-    Si vous souhaitez construire un modèle à partir du jeu de données HydroSHEDS, directement disponible, utilisez le notebook suivant :
-    - **Notebook :** [`/Codes/1_GettingBasicFiles.ipynb`](/Codes/1_GettingBasicFiles.ipynb)
+* **Option A: Use HydroSHEDS Data**
+    If you want to create a model based on the readily available HydroSHEDS dataset, use the following notebook:
+    - **Notebook:** [`/Codes/1_GettingBasicFiles.ipynb`](/Codes/1_GettingBasicFiles.ipynb)
 
-* **Option B : utiliser votre propre MNT**
-    Si vous disposez de votre propre MNT haute résolution, utilisez ce notebook pour en dériver les grilles DDM et FAM :
-    - **Notebook :** [`/Codes/1b_CreateBasicGrids.ipynb`](/Codes/1b_CreateBasicGrids.ipynb)
+* **Option B: Use a Custom DEM**
+    If you have your own high-resolution DEM, use this notebook to derive the DDM and FAM grids:
+    - **Notebook:** [`/Codes/1b_CreateBasicGrids.ipynb`](/Codes/1b_CreateBasicGrids.ipynb)
 
 
-**Résultat :** après avoir exécuté le notebook approprié, vérifiez que vos trois fichiers de sortie (`dem.tif`, `ddm.tif`, `fam.tif`) sont enregistrés dans le répertoire `/data/basic/`.
+**Result:** After running the appropriate notebook, ensure your three output files (`dem.tif`, `ddm.tif`, `fam.tif`) are saved in the `/data/basic/` directory.
 
 ---
 
-### Étape 2 : préparer les données de forçage en précipitation
+### Step 2: Prepare Precipitation Forcing Data
 
-Vous allez ensuite télécharger et mettre en forme les données de précipitation. Ce guide utilise IMERG v07 pour son excellente résolution spatiale et temporelle.
+Next, you will download and format the precipitation data. This guide uses IMERG v07 for its excellent spatial and temporal resolution.
 
-**Bloc du fichier de contrôle EF5 :**
+**EF5 Control File Block:**
 ```
 [PrecipForcing IMERG]
 TYPE=TIF
@@ -99,18 +94,18 @@ FREQ=30u
 LOC=/data/precip/
 NAME=imerg.YYYYMMDDHHUU.tif
 ```
-Suivez les instructions du notebook ci-dessous pour traiter les fichiers de précipitation.
-- **Notebook :** [`/Codes/2_Get_precipitation_files.ipynb`](/Codes/2_Get_precipitation_files.ipynb)
+Follow the instructions in the notebook below to process the precipitation files.
+- **Notebook:** [`/Codes/2_Get_precipitation_files.ipynb`](/Codes/2_Get_precipitation_files.ipynb)
 
-**Résultat :** placez tous les fichiers `.tif` de précipitation produits dans le répertoire `/data/precip/`.
+**Result:** Place all generated precipitation `.tif` files into the `/data/precip/` directory.
 
 ---
 
-### Étape 3 : préparer les données d'évapotranspiration potentielle (ETP)
+### Step 3: Prepare Potential Evapotranspiration (PET) Data
 
-Le dernier jeu de forçage requis est l'évapotranspiration potentielle.
+The final forcing dataset required is Potential Evapotranspiration.
 
-**Bloc du fichier de contrôle EF5 :**
+**EF5 Control File Block:**
 ```
 [PETForcing CLIMO]
 TYPE=TIF
@@ -120,78 +115,77 @@ LOC=/data/pet/
 NAME=PET.MM.tif
 ```
 
-Vous pouvez obtenir des données d'ETP auprès de plusieurs sources :
+You can obtain PET data from several sources:
 
-* **Jeu de données mondial :** l'Université de l'Oklahoma héberge des jeux de données d'ETP mondiaux compatibles avec EF5. Vous les trouverez dans le dépôt [EF5-Global-Parameters](https://github.com/HyDROSLab/EF5-Global-Parameters/tree/main/FAO_PET) ou, pour les États-Unis, dans [US-Parameters](https://github.com/HyDROSLab/EF5-US-Parameters).
-* **Jeu de données régional (Afrique de l'Ouest) :** si vous construisez le modèle Afrique de l'Ouest ou Ghana 1 km, des fichiers d'ETP déjà découpés sont disponibles [ici](https://github.com/RobledoVD/WAEF5-dockerized/tree/main/data/pet).
+* **Global Dataset:** The University of Oklahoma hosts global PET datasets compatible with EF5. You can find them in the [EF5-Global-Parameters](https://github.com/HyDROSLab/EF5-Global-Parameters/tree/main/FAO_PET) repository or if you are interested in U.S. [US-Parameters](https://github.com/HyDROSLab/EF5-US-Parameters)
+* **Regional Dataset (West Africa):** If you are building the West Africa or Ghana 1km model, pre-clipped PET files are available [here](https://github.com/RobledoVD/WAEF5-dockerized/tree/main/data/pet).
 
-**Résultat :** placez les fichiers `.tif` d'ETP mensuelle (par exemple `PET.01.tif`, `PET.02.tif`, etc.) dans le répertoire `/data/pet/`.
+**Result:** Place the monthly PET `.tif` files (e.g., `PET.01.tif`, `PET.02.tif`, etc.) into the `/data/pet/` directory.
 
 ---
 
-### Étape 4 : préparer les grilles d'un modèle distribué
+### Step 4: Preparing Grids for a Distributed Model
 
-Pour créer un modèle distribué à l'aide des tâches EF5 telles que `CLIP_GAUGE` et `BASIN_AVG`, toutes les grilles d'entrée doivent être parfaitement alignées. Elles doivent donc partager exactement la même emprise spatiale, la même résolution de pixel et le même système de coordonnées.
+To create a distributed model using EF5 tasks like `CLIP_GAUGE` and `BASIN_AVG`, all input grids must be perfectly aligned. This means they must share the exact same spatial domain (extent), pixel resolution, and coordinate system. 
 
-#### Entrées nécessaires
+#### Inputs needed
 
-* **Pour le bilan hydrique (CREST)**
+* **For Water Balance (CREST)**
 
-1. Rasters de texture du sol : pourcentage de sable, pourcentage d'argile et pourcentage de limon.
-> Vous pouvez accéder à ces fichiers sur [soilgrids.org](https://files.isric.org/soilgrids/former/2017-03-10/data/).
+1. Soil texture rasters: Percent Sand, Percent Clay, and Percent Silt.
+> You can access to these files in [soilgrids.org](https://files.isric.org/soilgrids/former/2017-03-10/data/) 
 
-2. Raster de profondeur jusqu'au substratum rocheux, en mètres.
+2. Depth to bedrock raster in meters
 
-* **Pour le routage de l'écoulement (KinematicWave)**
+* **Flow Routing (KinematicWave)**
 
-1. Le MNT et ses dérivés hydrologiques : le fichier MNT (dem), le fichier d'accumulation d'écoulement (facc) et le fichier de direction d'écoulement (fdir).
+1. DEM and their flow grid derivatives: DEM (dem) file, Flow Accumulation (facc) file, and Flow Direction (fdir) file.
 
-2. Grilles hydroclimatologiques : température moyenne (degrés Celsius) et précipitation annuelle totale moyenne (mm).
+2. Hydroclimatological grids: Mean Temperature (Celsius) and Mean Annual Total Precipitation (mm).
 
-3. Coefficient de rugosité de Manning.
+3. Manning's roughness coefficient.
 
-#### Préparation des grilles du domaine
+#### Preparing domain grids
 
-Le **modèle numérique de terrain (MNT)** sert de gabarit de référence pour l'ensemble du domaine de modélisation. Toutes les autres grilles doivent s'y conformer.
+The **Digital Elevation Model (DEM)** serves as the master template for the entire model domain. All other grids must conform to it.
 
-> **:warning: Point critique concernant les grilles de base**
+> **:warning: Critical Note on Basic Grids**
 >
-> Il est incorrect de rééchantillonner ou de reprojeter directement des grilles d'accumulation (`facc`) ou de direction (`fdir`) existantes. Si votre MNT doit être modifié (reprojection ou rééchantillonnage, par exemple), vous devez utiliser le **MNT final et correct** pour régénérer les grilles `facc` et `fdir` depuis le début (étape 1 de ce tutoriel).
+> It is incorrect to directly resample or reproject existing Flow Accumulation (`facc`) or Flow Direction (`fdir`) grids. If your DEM needs modification (e.g., re-projecting or resampling), you must use the **final, correct DEM** to regenerate the `facc` and `fdir` grids from scratch (Step 1 of this tutorial).
 
-Les grilles hydroclimatologiques ne sont pas tenues d'avoir la même grille de domaine, mais elles doivent avoir le même système de coordonnées que le MNT et ses dérivés. Si ce n'est pas le cas, utilisez un outil SIG pour les reprojeter dans le même système de coordonnées que le MNT. Le programme gdalwarp de GDAL en est un exemple. Si toutes les grilles partagent le même système de coordonnées, il suffit de les rééchantillonner et de les découper pour qu'elles correspondent à la résolution de pixel et à l'emprise du MNT.
+The hydroclimatological grids do not have to have the same domain grid, but do need to have the same coordinate system as dem and its derivatives. If this is not the case, use a GIS-based tool to re-project grids to match the same coordinate system as dem. An example of this kind of tool is GDAL's program gdalwarp. If all grids have the same coordinate system, all is needed is to resample and subset to match dem's pixel resolution and domain box. 
 
-Pour vous y aider, un script C-Shell est fourni dans ce dossier : « resample_and_subset.csh ». Voici comment l'utiliser :
+To help with this, a C-Shell script is included in this folder "resample_and_subset.csh". The following illustrates the usage:
 
 ```sh
-./resample_and_subset.csh <fichier_entree.tif> <fichier_sortie.tif> <gabarit.tif>
+./resample_and_subset.csh <input_file.tif> <output_file.tif> <template.tif>
 ```
 
-**fichier_entree.tif :** la grille à traiter (par exemple climatological_temperature.tif).
-**fichier_sortie.tif :** le nom souhaité pour le fichier traité et aligné (par exemple mean_temp.tif).
-**gabarit.tif :** la grille de référence servant de gabarit pour la résolution de pixel et les coordonnées du domaine (il doit s'agir de votre fichier dem.tif final).
+**input_file.tif:** The grid file that needs to be processed (e.g., climatological_temperature.tif).
+**output_file.tif:** The desired name for the processed, aligned file (e.g., mean_temp.tif).
+**template.tif:** The master grid to use as a template for pixel resolution and domain coordinates (this should be your final dem.tif).
 
-Exemple :
+Example:
 
 ```sh
 ./resample_and_subset.csh climatological_temperature.tif mean_temp.tif dem.tif
 ```
 
-Utilisez ce script C-Shell pour toutes les entrées listées ci-dessus.
+Use the C-Shell script for all the inputs listed above.
 
 ---
 
-### Étape 5 : définir automatiquement tous les exutoires avec `CLIP_GAUGE`
+### Step 5: Automatically defining all outlets locations with `CLIP_GAUGE`
 
-Forcer EF5 à modéliser chaque pixel d'un domaine peut devenir fastidieux si l'opération est faite à la main. Plutôt que de créer des centaines de blocs `[Gauge]` manuellement, vous pouvez utiliser un mode d'exécution EF5 spécifique qui identifie automatiquement tous les exutoires et génère la configuration correspondante.
+Forcing EF5 to model every pixel within a domain can be a tedious process if done manually. Instead of creating hundreds of `[Gauge]` blocks by hand, you can use a specific EF5 run mode to automatically identify all outlets and generate the necessary configuration.
 
-Ce traitement utilise le style `CLIP_GAUGE`. Voici la marche à suivre :
+This process uses the `CLIP_GAUGE` style. Here is the step-by-step guide:
 
-1. Configurer le fichier de contrôle CLIP_GAUGE
+1. Configure the CLIP_GAUGE Control File
+You will need to run EF5 with a temporary control file specifically for this task.
 
-Vous devrez exécuter EF5 avec un fichier de contrôle temporaire dédié à cette tâche.
-
-- Un fichier d'exemple est fourni dans ce dossier : [`/Resources/ef5_clip_gauge_sample.txt`]. Utilisez-le comme point de départ.
-- Dans le bloc [Task], vérifiez que le style d'exécution est bien réglé sur CLIP_GAUGE.
+- A sample file is provided in this folder:  [`/Resources/ef5_clip_gauge_sample.txt`]. Use it as your starting point.
+- In the [Task] block, ensure the run style is set to CLIP_GAUGE.
 
 ```
 [Task GAUGECLIP]
@@ -209,16 +203,16 @@ TIME_BEGIN=202406210000
 TIME_END=202406210400
 ```
 
-> **❗Important :** les autres blocs de ce fichier d'exemple (les chemins vers les données de forçage, par exemple) doivent tout de même contenir des valeurs valides. EF5 peut vérifier l'existence de ces fichiers même s'ils ne sont pas utilisés par l'opération CLIP_GAUGE.
+> **❗Important:** The other blocks in this sample file (e.g., paths to forcing data) must still contain valid entries. EF5 may check for the existence of these files even though they are not used in the CLIP_GAUGE operation.
 
-2. Exécuter EF5 et vérifier les sorties
+2. Run EF5 and Check the Outputs:
 
-Exécutez EF5 avec le fichier de contrôle configuré à l'étape précédente. À la fin du traitement, deux nouveaux fichiers sont produits :
+Run EF5 using the control file configured in the previous step. When the process is complete, two new files will be generated:
 
-- `maskgrid.tif` : un fichier raster que vous pouvez ouvrir dans QGIS ou un autre logiciel SIG. Il vous permet de vérifier visuellement que les bassins versants de votre domaine ont été correctement identifiés.
-- `basin_new.txt` : un fichier texte qui contient les blocs [Gauge] et [Basin] générés automatiquement pour votre modèle.
+- `maskgrid.tif`: This is a raster file you can open in QGIS or another GIS software. Use it to visually verify that the drainage basins within your domain have been correctly identified.
+- `basin_new.txt`: This text file contains the auto-generated [Gauge] and [Basin] blocks for your model.
 
-Le contenu de basin_new.txt ressemblera à ceci :
+The contents of basin_new.txt will look something like this:
 
 ```
 [Gauge 0] cellx=28 celly=6 outputts=false #Num Cells = 360.000000
@@ -231,34 +225,34 @@ Le contenu de basin_new.txt ressemblera à ceci :
 gauge=0 gauge=1 gauge=2 gauge=3 gauge=4 gauge=5 gauge=6 gauge=7 gauge=8 gauge=9 gauge=10 gauge=11 gauge=12 gauge=13 gauge=14 gauge=15 gauge=16 gauge=17 gauge=18 gauge=19 gauge=20 gauge=21 gauge=22 gauge=23 gauge=24 gauge=25 gauge=26 gauge=27 gauge=28 gauge=29 gauge=30 gauge=31 gauge=32 gauge=33 gauge=34 gauge=35 gauge=36 gauge=37 gauge=38 gauge=39 gauge=40 gauge=41 gauge=42 gauge=43 gauge=44 gauge=45
 
 ```
-3. Mettre à jour votre fichier de contrôle
+3. Update Your Control File:
 
-Vous allez maintenant reporter cette configuration dans le fichier de contrôle principal, celui qui servira aux simulations réelles.
+Now, you will transfer this configuration into the main control file that you will use to run actual simulations.
 
-- Ouvrez `basin_new.txt` et copiez-en tout le contenu.
-- Ouvrez votre fichier de contrôle de simulation final.
-- Collez le texte copié dans ce fichier. Le bon emplacement se situe entre le dernier bloc de forçage (par exemple [PETForcing CLIMO]) et le premier bloc de paramètres (par exemple [CrestParamSet]).
-- Cette opération définit un bassin unique et complet, nommé [Basin 0], qui regroupe toutes les stations générées. Si d'autres blocs de votre fichier de contrôle doivent référencer un bassin, veillez à ce qu'ils utilisent la valeur 0.
+- Open `basin_new.txt` and copy its entire contents.
+- Open your final simulation control file.
+- Paste the copied text into the file. The correct location is between the last forcing block (e.g., [PETForcing CLIMO]) and the first parameter block (e.g., [CrestParamSet]).
+- This process defines a single, comprehensive basin named [Basin 0] that includes all the generated gauges. If any other blocks in your control file need to reference a basin, ensure they are set to use 0.
 
 ---
 
-### Étape 6 : calculer les variables intégrées par bassin avec `BASIN_AVG`
+### Step 6: Calculate Basin-Integrated Variables with `BASIN_AVG`
 
-Pour produire certains paramètres, comme ceux du modèle de routage par onde cinématique, vous devez d'abord calculer des valeurs moyennes par bassin à partir de vos données maillées (la précipitation moyenne, par exemple). La tâche `BASIN_AVG` d'EF5 est prévue à cet effet.
+To generate certain parameters, like those for the kinematic wave routing model, you first need to calculate basin-wide average values from your gridded data (e.g., mean precipitation). The `BASIN_AVG` task in EF5 is designed for this purpose.
 
-Suivez ces étapes pour réaliser l'intégration par bassin :
+Follow these steps to perform the basin integration:
 
-1. Créez un nouveau dossier pour cette opération (par exemple basin_integration/).
+1. Create a new folder for this operation (e.g., basin_integration/).
 
-2. Copiez dans ce nouveau dossier `basin_integration/` les grilles à intégrer (`mean_temp.tif` et `mean_precip.tif`).
+2. Copy the grid files that need to be integrated (`mean_temp.tif` and `mean_precip.tif`) into this new `basin_integration/` folder.
 
-3. Modifiez votre fichier de contrôle principal pour réaliser cette tâche spécifique.
+3. Modify your main simulation control file to perform this specific task.
 
-> ❗**Important :** dans le bloc `[Task]`, réglez `STYLE` sur `BASIN_AVG`.
-> Faites pointer la variable `OUTPUT` vers le répertoire que vous venez de créer.
-> Vérifiez que les autres réglages correspondent bien à la configuration de votre projet.
+> ❗**Important:** In the `[Task]` block, set the `STYLE` to `BASIN_AVG`.
+> Point the `OUTPUT` variable to the directory you just created.
+> Ensure the other settings match your project's configuration.
 
-Le nouveau bloc de tâche de votre fichier de contrôle, utilisant la fonction de moyenne par bassin d'EF5, doit ressembler à ceci :
+The new task block in your control file using basin average function of EF5 should looks like this:
 
 ```
 [Task BASINAVGING] 
@@ -277,23 +271,23 @@ TIME_BEGIN=202010100830
 TIME_END=202010110400 
 ```
 
-> **Remarque :** vérifiez que les noms utilisés pour BASIN, PET, PARAM_SET, etc. sont cohérents avec le reste de votre fichier de contrôle.
+> **Note:** Ensure that the names for BASIN, PET, PARAM_SET, etc., are consistent with the rest of your control file.
 
-4. Enregistrez le fichier de contrôle modifié et lancez EF5 avec celui-ci. Le modèle affiche l'avancement à l'écran. Le traitement ne devrait prendre que quelques secondes, un peu plus pour des domaines à très haute résolution.
+4. Save the modified control file and run EF5 using this control file. The model will print status updates to the screen. The process should only take a few seconds, but may be longer for very high-resolution domains.
 
-Le traitement se termine par l'affichage d'un message d'erreur. **C'est normal pour cette tâche particulière.**
+The process will finish by printing an error message to the screen. **This is normal for this specific task.**
 
-> **:warning: Erreur attendue**
+> **:warning: Expected Error**
 > `ERROR:src/ExecutionController.cpp(94): Unimplemented simulation run style "7"`
-> Vous pouvez ignorer cette erreur sans risque. Elle indique que l'opération BASIN_AVG s'est terminée correctement.
+> You can safely ignore this error. It indicates that the BASIN_AVG operation completed successfully.
 
-5. Vérifiez les sorties : ouvrez le dossier de sortie que vous avez créé (par exemple basin_integration/). Vous y trouverez de nouveaux fichiers GeoTIFF contenant les résultats du calcul, tels que `mean_temp_basin_avg.tif` et `mean_precip_basin_avg.tif`. Ces fichiers contiennent les valeurs intégrées par bassin nécessaires aux étapes suivantes.
+5. Verify the Output:  Navigate to the output folder you created (e.g., basin_integration/). You will now find new geotiff files containing the results of the calculation, such as `mean_temp_basin_avg.tif` and `mean_precip_basin_avg.tif`. These files contain the basin-integrated values needed for subsequent steps.
 
 ---
 
-### Étape 7 : créer les paramètres CREST
+### Step 7: Create the CREST parameters
 
-À ce stade, vous devez disposer des rasters de texture du sol découpés et rééchantillonnés sur votre domaine (voir l'étape 4 de ce guide). Placez-les dans un dossier `CREST_input`. Les fichiers attendus dans ce dossier sont :
+At this point, you should have the soil texture rasters clipped and regridded for your area domain (see Step 4 in this guide). Place them into a folder `CREST_input`. The expected files in this folder are:
 
 `BDRICM_M.tif      
 CLYPPT_M_sl3.tif  
@@ -311,12 +305,12 @@ SNDPPT_M_sl1.tif
 SNDPPT_M_sl4.tif  
 SNDPPT_M_sl7.tif`
 
-Utilisez le notebook suivant et suivez ses instructions :
-- **Notebook :** [`/Codes/4_Crest_parameters_estimation.ipynb`](/Codes/4_Crest_parameters_estimation.ipynb)
+Use the following notebook and follow its instructions:
+- **Notebook:** [`/Codes/4_Crest_parameters_estimation.ipynb`](/Codes/4_Crest_parameters_estimation.ipynb)
 
-Les sorties vous permettront de remplir le bloc suivant du fichier de contrôle :
+The outputs will help you to fill out the next block in the control file:
 
-**Bloc du fichier de contrôle EF5 :**
+**EF5 Control File Block:**
 ```
 [CrestParamSet MyCREST]
 wm_grid=/data/Parameters/crest_Wm.tif
@@ -333,18 +327,18 @@ fc=1.0
 iwu=0
 ```
 
-❗**Couche des surfaces imperméables**
+❗**Impervious Layer**
 
-Vous aurez remarqué qu'aucun fichier `crest_IM.tif` ne figure dans le dossier de sortie. Il n'est pas nécessaire de calculer la couche des surfaces imperméables, car plusieurs produits satellitaires existent pour cela : assurez-vous simplement que les unités sont exprimées en pourcentage. Nous utilisons ici le jeu de données [Global Man-made Impervious Surface (GMIS) Dataset From Landsat](https://search.earthdata.nasa.gov/search/granules?p=C3550185860-ESDIS&pg[0][v]=f&pg[0][gsk]=-start_date&q=GMIS&tl=1278028800!3!!). Lisez la documentation de ce produit et traitez-le en conséquence. Un notebook est fourni pour vous aider dans cette opération :
-- **Notebook :** [`/Codes/4b_IM_layer_processing.ipynb`](/Codes/4b_IM_layer_processing.ipynb)
+You should have noticed that there is not `crest_IM.tif` file in the outputs folder. It is not necessary to calculate the impervious layer because there are  multiple satellite products available for this, just make sure the units are in percentage. In this case we use the [Global Man-made Impervious Surface (GMIS) Dataset From Landsat](https://search.earthdata.nasa.gov/search/granules?p=C3550185860-ESDIS&pg[0][v]=f&pg[0][gsk]=-start_date&q=GMIS&tl=1278028800!3!!). Please read the documentation of this product and process it according to that. We include a notebook to help with this process: 
+- **Notebook:** [`/Codes/4b_IM_layer_processing.ipynb`](/Codes/4b_IM_layer_processing.ipynb)
 
 ---
 
-### Étape 8 : créer les paramètres de l'onde cinématique (KW)
+### Step 8: Create the Kinematic Wave (KW) Parameters
 
-La dernière étape consiste à calculer les paramètres de routage requis par le modèle d'onde cinématique. Pour cela, vous devez préparer un jeu de grilles d'entrée. Placez les fichiers suivants dans le dossier : `/codes/KW_parameters/inputs_grids/`
+The final step is to compute the routing parameters required for the Kinematic Wave model. To do this, you must prepare a set of input grids. Place the following files into the folder: `/codes/KW_parameters/inputs_grids/`
 
-Fichiers requis :
+Required files:
 
 `basin.area.tif
 dem.tif
@@ -354,16 +348,16 @@ mean_precip.avg.tif
 mean_temp.avg.tif
 relief.ratio.tif`
 
->❗**Important :**
-> Vérifiez que les noms de fichiers correspondent exactement. EF5 peut produire des grilles moyennées portant des noms du type mean_precip.tif.avg.tif. Si c'est le cas, renommez les fichiers pour qu'ils respectent le format d'entrée attendu.
+>❗**Important:**
+> Ensure the filenames match exactly. EF5 may generate average grid files with names like mean_precip.tif.avg.tif. If this happens, rename the files accordingly so they match the expected input format.
 
-Ouvrez le notebook Jupyter suivant et suivez ses instructions pour calculer les paramètres KW :
+Open and follow the instructions in the following Jupyter notebook to compute the KW parameters:
 
-- **Notebook :** [`/Codes/5_KM_parameters/5_Kinematic_Wave_Parameter_Estimation.ipynb`](/Codes/5_KM_parameters/5_Kinematic_Wave_Parameter_Estimation.ipynb)
+- **Notebook:** [`/Codes/5_KM_parameters/5_Kinematic_Wave_Parameter_Estimation.ipynb`](/Codes/5_KM_parameters/5_Kinematic_Wave_Parameter_Estimation.ipynb)
 
-Les sorties vous permettront de remplir le bloc suivant du fichier de contrôle :
+The outputs will help you to fill out the next block in the control file:
 
-**Bloc du fichier de contrôle EF5 :**
+**EF5 Control File Block:**
 ```
 [kwparamset MyKW]
 alpha_grid=parameters/alpha_kw.tif
@@ -379,5 +373,8 @@ leaki=0.03
 th=12.0
 isu=0.0
 ```
-# Citer ce paquet
+# Cite this package as
 Robledo, V., Henao, S., Vergara, H. (2025). A Complete Guide to Constructing and Implementing an EF5 Model from Scratch. (v1.0). https://doi.org/10.5281/zenodo.15644400
+
+
+
