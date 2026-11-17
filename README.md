@@ -610,10 +610,9 @@ The outputs will help you to fill out the next block in the control file:
 **EF5 Control File Block:**
 ```
 [kwparamset MyKW]
-alpha_grid=outputs/kw/kw_alpha.tif
-beta_grid=outputs/kw/kw_beta.tif
-alpha0_grid=outputs/kw/kw_alpha0.tif
-under_grid=parameters/crest_Fc_Ksat.tif
+alpha_grid=parameters/kw_alpha.tif
+beta_grid=parameters/kw_beta.tif
+alpha0_grid=parameters/kw_alpha0.tif
 gauge=0
 alpha=1.0
 alpha0=1.0
