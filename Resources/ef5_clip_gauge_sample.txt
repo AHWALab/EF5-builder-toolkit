@@ -1,28 +1,28 @@
+# Run EF5 from the repository root so these relative paths resolve.
 [Basic] 
-DEM=/data/basic/DEM.tif
-DDM=/data/basic/FDIR.tif
-FAM=/data/basic/FAC.tif
+DEM=../Example/data_model/basic/dem.tif
+DDM=../Example/data_model/basic/ddm.tif
+FAM=../Example/data_model/basic/fam.tif
 PROJ=geographic
-ESRIDDM=true SelfFAM=false
+ESRIDDM=true SelfFAM=true
 
 [PrecipForcing IMERG]
 TYPE=TIF
 UNIT=mm/h
 FREQ=30u
-LOC=/data/precip/
+LOC=../Example/data_model/precip/imerg_final/
 NAME=imerg.YYYYMMDDHHUU.tif
 
-
-[PETForcing CLIMO]
+[PETForcing FAO_PET]
 TYPE=TIF
 UNIT=mm/d
-FREQ=1m
-LOC=/data/pet/
-NAME=PET.MM.tif
+FREQ=1M
+LOC=../Example/useful_datasets/PET/FAO_PET/
+NAME=FAO.PET.MM.mm_per_day.proc.tif
 
 ##-----Gauge Block----
 
-[gauge 0] lat=39.93 lon=-91.42
+[gauge 0] lat=5.7958 lon=0.65254
 
 [Basin 0]
 gauge=0
@@ -49,20 +49,20 @@ leaki=1.0
 th=10.0
 isu=00.0
 
-
 [Task GAUGECLIP]
 STYLE=CLIP_GAUGE
 MODEL=crest
 ROUTING=KW
 BASIN=0
+defaultparamsgauge=0
 PRECIP=IMERG
-PET=CLIMO
-OUTPUT=/outputs/ 
+PET=FAO_PET
+OUTPUT=../Example/posproc_outputs/clip_gauge/
 PARAM_SET=CREST
 ROUTING_PARAM_Set=KinematicWave
-TIMESTEP=60u
-TIME_BEGIN=202406210000
-TIME_END=202406210400
+TIMESTEP=30u
+TIME_BEGIN=202506010030
+TIME_END=202506010100
 
 [Execute]
 task=GAUGECLIP

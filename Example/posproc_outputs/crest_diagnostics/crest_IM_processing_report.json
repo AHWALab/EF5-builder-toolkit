@@ -1,0 +1,25 @@
+{
+  "dataset": "GMIS 2010 v1",
+  "units": "percent",
+  "source_product": "geographic_250m",
+  "shape": [
+    4865,
+    3666
+  ],
+  "pixel_size_degrees": [
+    0.002083330000000031,
+    0.002083330000000031
+  ],
+  "dem_pixel_size_degrees": [
+    0.00833333333333333,
+    0.00833333333333333
+  ],
+  "crs": "EPSG:4326",
+  "valid_cells": 9593456,
+  "filled_cells": 16105,
+  "remaining_missing_domain_cells": 0,
+  "minimum": 0.0,
+  "maximum": 100.0,
+  "tiled": false,
+  "compression": "none"
+}

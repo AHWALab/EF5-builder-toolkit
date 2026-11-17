@@ -1,0 +1,23 @@
+<PAMDataset>
+  <Metadata>
+    <MDI key="bedrock_units">cm</MDI>
+    <MDI key="bedrock_upper_cutoff">none</MDI>
+    <MDI key="filled_input_cells">262</MDI>
+    <MDI key="isolated_fill">eight_neighbors_single_pass</MDI>
+    <MDI key="method">legacy_crest_texture_lookup</MDI>
+    <MDI key="parameter">b</MDI>
+    <MDI key="source_notebook">OLD_Builder/4_Crest_parameters_estimation.ipynb</MDI>
+    <MDI key="texture_depth_average">equal_mean_seven_levels</MDI>
+    <MDI key="units">dimensionless</MDI>
+  </Metadata>
+  <PAMRasterBand band="1">
+    <Metadata>
+      <MDI key="STATISTICS_APPROXIMATE">YES</MDI>
+      <MDI key="STATISTICS_MAXIMUM">11.550000190735</MDI>
+      <MDI key="STATISTICS_MEAN">6.5553356497919</MDI>
+      <MDI key="STATISTICS_MINIMUM">4.2600002288818</MDI>
+      <MDI key="STATISTICS_STDDEV">0.90110041709749</MDI>
+      <MDI key="STATISTICS_VALID_PERCENT">51.69</MDI>
+    </Metadata>
+  </PAMRasterBand>
+</PAMDataset>

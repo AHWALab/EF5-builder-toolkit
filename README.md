@@ -1,9 +1,9 @@
-# Building an EF5 Model: A Step-by-Step Guide
+# EF5 Builder Toolkit
 
-A complete guide to constructing and implementing an EF5 model from scratch using Python and Jupyter Notebooks.
+A guide and Python library for constructing EF5 model layers, with Jupyter notebooks to run and inspect each step.
 
 ## Overview
-This repository provides a step-by-step guide for setting up an EF5 model configuration. The included code and resources are designed to help users build a functional model for their own watershed. The methodology outlined here has been successfully used to create EF5 models at various resolutions for regions like Ghana, West Africa, and Iowa, USA.
+This repository provides a step-by-step guide for setting up an EF5 model configuration. The included code and resources are designed to help users build a functional model for their own watershed. The methodology outlined here has been successfully used to create EF5 models at various resolutions for different regions.
 
 The core of the EF5 model is the **control file**, which defines all the input data and parameters. This guide is structured around filling out the necessary blocks within this control file.
 
@@ -11,93 +11,199 @@ For a comprehensive understanding of EF5, please refer to the official documenta
 
 For any questions, contact Vanessa Robledo (vanessa-robledodelgado@uiowa.edu) or the [AHWA Laboratory](https://ahwa.lab.uiowa.edu) Development team at [engr-ahwa-lab@uiowa.edu](mailto:engr-ahwa-lab@uiowa.edu).
 
----
 
-## Prerequisites
+## Set up your Conda environment
 
-You have two options for running the code in this guide:
+Choose either a new environment or your current environment. Run the setup commands from the **EF5-builder-toolkit repository root**, where `environment.yml` and `pyproject.toml` are located. The repository must be available on the machine running Python or the notebook kernel.
 
-#### 1. Google Colaboratory (Recommended)
-The easiest way to get started is with Google Colab, as all notebooks are adapted to run in that environment.
-- **Link:** [https://colab.research.google.com/](https://colab.research.google.com/)
+The root [environment.yml](environment.yml) installs the required libraries through conda-forge and installs this local toolkit through its pip subsection. This is a regular package installation performed automatically by Conda. No separate editable-install command is needed, and imports work from any directory after setup.
 
-#### 2. Local Conda Environment
-If you prefer to work on your local machine, we recommend creating a new Conda environment to avoid package conflicts.
+### Option A: Create an ef5-builder environment
 
-1.  **Create the environment from the provided file:**
-    The `environment.yml` file is located in the `/prerequisites` folder. Run the following command in your terminal:
-    ```sh
-    conda env create -f prerequisites/environment.yml
-    ```
-    *(This process may take several minutes.)*
-
-2.  **Activate the new environment:**
-    ```sh
-    conda activate ef5_env
-    ```
-
----
-
-## Project Structure
-
-All necessary files are organized into the following folders:
-
--   **/Codes:** Contains all Jupyter Notebooks for each step.
--   **/Prerequisites:** Includes the Conda environment file.
-
----
-
-## Step-by-Step Instructions
-
-The following steps will walk you through generating the required input files for the EF5 model, using the control file blocks as our guide.
-
-
-### Step 1: Getting the basic files
-
-This first step creates the basic grid files that EF5 employs to define the computational mesh: the Digital Elevation Model (DEM), Flow Direction Model (DDM), and Flow Accumulation Model (FAM).
-
-**EF5 Control File Block:**
+```sh
+conda env create --file environment.yml
+conda activate ef5-builder
 ```
+
+### Option B: Add the toolkit to an existing Conda environment
+
+Replace `YOUR_ENV` with the name of your environment:
+
+```sh
+conda activate YOUR_ENV
+conda env update --name YOUR_ENV --file environment.yml
+```
+
+This installs the same dependencies and toolkit in the selected environment. It may update dependency versions to satisfy the environment file. The command does not prune other packages.
+
+### Use the environment in JupyterHub or VS Code
+
+In the activated environment, register a notebook kernel:
+
+```sh
+python -m ipykernel install --user --name ef5-builder --display-name "EF5 Builder"
+```
+
+Select **EF5 Builder** as the notebook kernel. To launch Jupyter from this environment:
+
+```sh
+jupyter lab
+```
+
+Check the installation:
+
+```sh
+python -c "from ef5_builder import prepare_hydrosheds, prepare_from_dem, download_precipitation, download_soilgrids_2017, download_soilgrids_v2; print('EF5 Builder ready')"
+```
+
+## Project structure
+
+```text
+EF5-builder-toolkit/
+├── environment.yml          # Conda environment for all example notebooks
+├── pyproject.toml           # Python package configuration
+├── README_library.md        # Step-by-step learning guide
+├── ef5_builder/             # Functions imported by the notebooks
+├── Example/
+│   ├── Example_notebooks/   # Guided examples, in step order
+│   ├── useful_datasets/    # Source datasets for the Ghana example
+│   ├── data_model/         # Prepared EF5 inputs and parameter grids
+│   └── posproc_outputs/    # Intermediate grids and inspection results
+├── Resources/              # EF5 control examples and TIFF conversion scripts
+└── docs/                   # Methods, input requirements, and troubleshooting
+```
+
+## Step-by-step instructions
+
+### Step 1: Create DEM, flow direction, and flow accumulation grids
+
+EF5 uses the DEM, flow direction (FDIR/DDM), and flow accumulation (FACC/FAM) to define its computational mesh. Run [Codes/1_Basic_grids_library.ipynb](Example/Example_notebooks/1_Basic_grids_library.ipynb), set your input and output paths, and choose a workflow. The notebook imports the installed functions directly:
+
+```python
+from ef5_builder import prepare_hydrosheds, prepare_from_dem
+```
+
+#### Option A: Prepare HydroSHEDS layers
+
+Supply aligned HydroSHEDS DEM, ACC, and DIR rasters. Include a polygon region to clip and mask the outputs:
+
+```python
+outputs = prepare_hydrosheds(
+    dem="data/hyd_dem.tif",
+    facc="data/hyd_acc.tif",
+    fdir="data/hyd_dir.tif",
+    region="data/region.gpkg",  #Optional. A shapefile is also accepted 
+    output_dir="data/basic",
+)
+```
+
+Omit `region` (or set `region=None`) to convert the full raster extent:
+
+```python
+outputs = prepare_hydrosheds(
+    dem="data/hyd_dem.tif",
+    facc="data/hyd_acc.tif",
+    fdir="data/hyd_dir.tif",
+    output_dir="data/basic",
+)
+```
+
+All three rasters are required and must be single-band, already in **EPSG:4326**, with identical CRS, transform, and dimensions. Use ACC upstream-cell counts rather than ACA upstream area. Accumulation must be nonnegative, and flow direction must use ESRI D8 codes (`1, 2, 4, 8, 16, 32, 64, 128`); `0` is also accepted for cells without a downstream direction. 
+
+The function preserves the native grid without resampling or reprojection; vector coordinates are transformed to the raster CRS. Processing uses 512 × 512 pixel windows to support large source rasters. Global mosaicking is not included.
+
+#### Option B: Derive drainage from a DEM
+
+Supply a single-band, north-up DEM without rotation, already in **EPSG:4326**, and optionally a polygon region:
+
+```python
+outputs = prepare_from_dem(
+    dem="data/my_dem.tif",
+    region="data/region.gpkg",
+    output_dir="data/basic",
+)
+```
+
+By default (`condition=True`), the function fills pits and depressions, resolves flats, and calculates ESRI D8 direction and accumulation over the full supplied DEM before optionally clipping and masking to the region. Use `condition=False` to skip pit filling, depression filling, and flat resolution when deriving drainage from an already conditioned DEM:
+
+```python
+outputs = prepare_from_dem(
+    dem="data/conditioned_dem.tif",
+    output_dir="data/basic",
+    condition=False,
+)
+```
+
+This example omits `region`, so outputs cover the full DEM extent. Supply the complete upstream catchment even when clipping to a smaller region. If you need a different resolution or need to convert a projected DEM to EPSG:4326, prepare the DEM first, then derive drainage. Geographic routing uses angular pixel distances. The output DEM retains original elevations; conditioning is used only for routing.
+
+#### Optional arguments
+
+| Argument | Default | Behavior |
+| --- | --- | --- |
+| `region` | `None` | Process the full raster extent; supply a vector file path or GeoDataFrame to clip and mask. |
+| `all_touched` | `False` | Use the default pixel-center polygon mask; set `True` to include all pixels touched by the region. Applies only when a region is supplied. |
+| `overwrite` | `False` | Refuse existing output files; set `True` to replace them. Output paths must never replace input rasters. |
+| `condition` | `True` | Fill pits and depressions and resolve flats before routing. Available only in `prepare_from_dem`. |
+
+`all_touched`, `overwrite`, and `condition` are keyword-only arguments.
+
+#### Outputs and EF5 settings
+
+When a region is supplied, both functions accept a vector file path or a filtered GeoDataFrame with a defined CRS. All features are included; geometries must be nonempty, valid Polygons or MultiPolygons, and the region must be fully covered by the raster extent. Both functions return `dem`, `fdir`, and `facc`:
+
+| Layer | Output | Data type | NoData |
+| --- | --- | --- | --- |
+| DEM | `dem.tif` | float32 | -9999 |
+| FDIR / DDM | `ddm.tif` | float32 | -9999 |
+| FACC / FAM | `fam.tif` | float32 | -9999 |
+
+Accumulation derived by `prepare_from_dem` includes the current cell, so use `SelfFAM=true`; for supplied HydroSHEDS ACC, use the same setting for counts that include the current cell.
+
+```ini
 [Basic]
 DEM=data/basic/dem.tif
 DDM=data/basic/ddm.tif
 FAM=data/basic/fam.tif
 PROJ=geographic
 ESRIDDM=true
-SelfFAM=false
+SelfFAM=true
 ```
-Users have several options such as QGIS or ArcGIS based methodologies. However, in this tutorial you have two options depending on your available data:
 
-* **Option A: Use HydroSHEDS Data**
-    If you want to create a model based on the readily available HydroSHEDS dataset, use the following notebook:
-    - **Notebook:** [`/Codes/1_GettingBasicFiles.ipynb`](/Codes/1_GettingBasicFiles.ipynb)
-
-* **Option B: Use a Custom DEM**
-    If you have your own high-resolution DEM, use this notebook to derive the DDM and FAM grids:
-    - **Notebook:** [`/Codes/1b_CreateBasicGrids.ipynb`](/Codes/1b_CreateBasicGrids.ipynb)
-
-
-**Result:** After running the appropriate notebook, ensure your three output files (`dem.tif`, `ddm.tif`, `fam.tif`) are saved in the `/data/basic/` directory.
+Use `PROJ=geographic` for these EPSG:4326 outputs. Neither function accepts projected raster inputs or reprojects drainage rasters.
 
 ---
 
-### Step 2: Prepare Precipitation Forcing Data
+### Step 2: Prepare precipitation forcing data
 
-Next, you will download and format the precipitation data. This guide uses IMERG v07 for its excellent spatial and temporal resolution.
+Run [Codes/2_Get_precipitation_files_library.ipynb](Example/Example_notebooks/2_Get_precipitation_files_library.ipynb). It provides a short example for each supported product and saves them in separate folders under `Example/posproc_outputs/precip`.
 
-**EF5 Control File Block:**
+| Product | Time step | Output units |
+| --- | --- | --- |
+| IMERG Final | 30 minutes | mm/h |
+| IMERG Early | 30 minutes | mm/h |
+| MRMS Rate | 2 minutes | mm/h |
+| MRMS Pass2 | 1 hour | mm |
+
+IMERG requires a [PPS-registered email](https://registration.pps.eosdis.nasa.gov/). MRMS needs no account; choose bounds within its coverage rather than the Ghana example bounds.
+
+```python
+from ef5_builder import download_precipitation
+
+outputs = download_precipitation(
+    product="IMERG",
+    imerg_run="early",  # "final" is also available.
+    start="2025-06-01 00:00:00",
+    end="2025-06-01 01:00:00",
+    output_dir="data/precip/imerg_early",
+    email="your-registered-email@example.com",
+)
 ```
-[PrecipForcing IMERG]
-TYPE=TIF
-UNIT=mm/h
-FREQ=30u
-LOC=/data/precip/
-NAME=imerg.YYYYMMDDHHUU.tif
-```
-Follow the instructions in the notebook below to process the precipitation files.
-- **Notebook:** [`/Codes/2_Get_precipitation_files.ipynb`](/Codes/2_Get_precipitation_files.ipynb)
 
-**Result:** Place all generated precipitation `.tif` files into the `/data/precip/` directory.
+Use UTC dates aligned to the product's time step. `start` is included and `end` is excluded for source times. IMERG filenames label interval ends; MRMS keeps source timestamps. Existing files require `overwrite=True`.
+
+Outputs are GeoTIFFs in the format required by EF5. Missing archive files raise an error rather than being replaced with another date or product.
+
+See [precipitation technical details](docs/precipitation.md) for more information.
 
 ---
 
@@ -122,20 +228,22 @@ You can obtain PET data from several sources:
 
 **Result:** Place the monthly PET `.tif` files (e.g., `PET.01.tif`, `PET.02.tif`, etc.) into the `/data/pet/` directory.
 
+In this repository, FAO_PET files are provided to be used in the example for the Ghana model.
+
 ---
 
 ### Step 4: Preparing Grids for a Distributed Model
 
-To create a distributed model using EF5 tasks like `CLIP_GAUGE` and `BASIN_AVG`, all input grids must be perfectly aligned. This means they must share the exact same spatial domain (extent), pixel resolution, and coordinate system. 
+To create a distributed model using EF5 tasks like `CLIP_GAUGE` and `BASIN_AVG`, all input grids must be **perfectly aligned**. This means they must share the exact same spatial domain (extent), pixel resolution, and coordinate system. 
 
 #### Inputs needed
 
 * **For Water Balance (CREST)**
 
 1. Soil texture rasters: Percent Sand, Percent Clay, and Percent Silt.
-> You can access to these files in [soilgrids.org](https://files.isric.org/soilgrids/former/2017-03-10/data/) 
 
-2. Depth to bedrock raster in meters
+2. Depth to bedrock raster in centimetres for the CREST calculation (`BDRICM_M_250m.tif`).
+> Download these layers using one of the SoilGrids functions below. 
 
 * **Flow Routing (KinematicWave)**
 
@@ -153,27 +261,129 @@ The **Digital Elevation Model (DEM)** serves as the master template for the enti
 >
 > It is incorrect to directly resample or reproject existing Flow Accumulation (`facc`) or Flow Direction (`fdir`) grids. If your DEM needs modification (e.g., re-projecting or resampling), you must use the **final, correct DEM** to regenerate the `facc` and `fdir` grids from scratch (Step 1 of this tutorial).
 
-The hydroclimatological grids do not have to have the same domain grid, but do need to have the same coordinate system as dem and its derivatives. If this is not the case, use a GIS-based tool to re-project grids to match the same coordinate system as dem. An example of this kind of tool is GDAL's program gdalwarp. If all grids have the same coordinate system, all is needed is to resample and subset to match dem's pixel resolution and domain box. 
+The **hydroclimatological grids** do not have to have the same domain grid, but do need to have the same coordinate system as dem and its derivatives. Use **Resources/prepare_ef5_inputs.sh** to preprocess the files so ef5 can use them. 
 
-To help with this, a C-Shell script is included in this folder "resample_and_subset.csh". The following illustrates the usage:
-
-```sh
-./resample_and_subset.csh <input_file.tif> <output_file.tif> <template.tif>
+```bash
+bash Resources/prepare_ef5_inputs.sh input.tif [output.tif]
 ```
 
-**input_file.tif:** The grid file that needs to be processed (e.g., climatological_temperature.tif).
-**output_file.tif:** The desired name for the processed, aligned file (e.g., mean_temp.tif).
-**template.tif:** The master grid to use as a template for pixel resolution and domain coordinates (this should be your final dem.tif).
+#### 1. Water Balance (CREST): Download SoilGrids layers
 
-Example:
+Run [Codes/4_distributed_model_grids.ipynb](Codes/4_distributed_model_grids.ipynb) or call the two functions below to download regional soil texture data directly from ISRIC at their native resolution and CRS. Downloading and DEM alignment are separate steps. Use the **2017 release for the current CREST parameter calculation**: it supplies the seven depth levels and bedrock layer expected by that workflow.
 
-```sh
-./resample_and_subset.csh climatological_temperature.tif mean_temp.tif dem.tif
+```python
+from ef5_builder import download_soilgrids_2017, resample_and_subset
 ```
 
-Use the C-Shell script for all the inputs listed above.
+##### Option A: SoilGrids 2017
 
----
+```python
+outputs = download_soilgrids_2017(
+    output_dir="data/soilgrids_2017",
+    dem="data/basic/dem.tif",
+)
+```
+
+Outputs use names such as `SNDPPT_M_sl1_250m.tif`, `CLYPPT_M_sl1_250m.tif`, `SLTPPT_M_sl1_250m.tif`, and `BDRICM_M_250m.tif`. The `250m` suffix identifies the source product; the output grid retains the native source resolution. The return dictionary uses keys such as `sand_sl1`, `clay_sl1`, and `bedrock`.
+
+The complete required CREST input set is:
+
+```text
+BDRICM_M_250m.tif
+CLYPPT_M_sl1_250m.tif
+CLYPPT_M_sl2_250m.tif
+CLYPPT_M_sl3_250m.tif
+CLYPPT_M_sl4_250m.tif
+CLYPPT_M_sl5_250m.tif
+CLYPPT_M_sl6_250m.tif
+CLYPPT_M_sl7_250m.tif
+SNDPPT_M_sl1_250m.tif
+SNDPPT_M_sl2_250m.tif
+SNDPPT_M_sl3_250m.tif
+SNDPPT_M_sl4_250m.tif
+SNDPPT_M_sl5_250m.tif
+SNDPPT_M_sl6_250m.tif
+SNDPPT_M_sl7_250m.tif
+```
+
+Select fewer layers when needed:
+
+```python
+outputs = download_soilgrids_2017(
+    output_dir="data/soilgrids_2017_subset",
+    dem="data/basic/dem.tif",
+    properties=("sand", "clay"),
+    depths=("sl1", "sl2"),
+    include_bedrock=False,
+)
+```
+
+Sources: [2017 archive](https://files.isric.org/soilgrids/former/2017-03-10/data/) and [ISRIC 2017 property units and depths](https://docs.isric.org/globaldata/soilgrids/SoilGrids_faqs_2017.html).
+
+##### Option B: SoilGrids v2 (Not recommended for CREST)
+We have included the optio to download SoilGrids v2. However it is the user's job to adapt the layers to the Crest computation.
+
+```python
+from ef5_builder import  download_soilgrids_v2
+
+outputs = download_soilgrids_v2(
+    output_dir="data/soilgrids_v2",
+    dem="data/basic/dem.tif",
+)
+```
+
+The default downloads **12 mean layers**: sand and clay for six depth intervals (`0-5cm`, `5-15cm`, `15-30cm`, `30-60cm`, `60-100cm`, `100-200cm`). ISRIC stores these texture values in **g/kg**; the function divides by **10** to obtain percent. For example, `350 g/kg` becomes `35%`. NoData is masked before conversion.
+
+Converting units does **not** make the releases interchangeable. The v2 function does not invent a bedrock layer or rename its intervals as `sl1`–`sl7`. **Adapting CREST to v2 requires a separate choice of depth integration and bedrock data.**
+
+Sources: [v2 archive](https://files.isric.org/soilgrids/latest/data/) and [ISRIC v2 units and depth intervals](https://docs.isric.org/globaldata/soilgrids/SoilGrids_faqs_01.html).
+
+
+
+##### Resample and subset downloaded layers
+
+After downloading, align each soil raster to your model DEM with `resample_and_subset`. The DEM supplies the output extent, pixel size, and coordinate system. This loop processes each TIFF in the download folder and saves an EF5-ready copy in `data/soilgrids_aligned`.
+
+```python
+from pathlib import Path
+from ef5_builder import resample_and_subset
+
+input_dir = Path("data/soilgrids_2017")
+output_dir = Path("data/soilgrids_aligned")
+
+for path in sorted(input_dir.glob("*.tif")):
+    resample_and_subset(
+        input_file=path,
+        output_file=output_dir / path.name,
+        template="data/basic/dem.tif",
+        mask_template=True,
+    )
+```
+
+`mask_template=True` keeps cells inside the DEM's valid area. Set `overwrite=True` when rerunning this step to replace existing outputs. More resampling options and file-format details are in [the alignment reference](docs/soilgrids.md#align-downloaded-rasters).
+
+#### 2. Flow Routing (KW)
+
+Prepare the inputs that describe how water moves through your model area. In this step you will create a Manning roughness grid from land cover and prepare mean temperature and precipitation grids. Step 6 calculates basin averages, and Step 8 uses these inputs to estimate the KW parameters.
+
+1. Download MODIS annual land-cover GeoTIFFs using the Earth Engine script linked below. Choose the `LC_Type2` product and the year you want to model.
+2. Run `annual_manning_from_modis` to assign a roughness value to each land-cover class.
+3. Align the resulting Manning grid to your DEM using `resample_and_subset`, as shown in notebook 4.
+4. Prepare `mean_temp.tif` and `mean_precip.tif` for `BASIN_AVG`. The Ghana example uses temperature in °C and annual precipitation in mm/year.
+
+```python
+from ef5_builder import annual_manning_from_modis
+
+annual_n = annual_manning_from_modis(
+    input_dir="data/modis_lc_type2",
+    output_dir="data/manning/native",
+    file_pattern="MCD12Q1_UMD_*.tif",
+)
+```
+
+The function saves one `manning_n_YYYY.tif` for each detected year. Use single-band EPSG:4326 MODIS files with the year in their names and NoData coded as 255. [Open notebook 4](Example/Example_notebooks/4_Get_Distributed_Model_Grids.ipynb).
+
+The ready-to-use Earth Engine script is in [export_modis_umd.js](Example/Example_notebooks/earth_engine/export_modis_umd.js). Export instructions, roughness values, and assumptions are in [Manning documentation](docs/manning.md).
 
 ### Step 5: Automatically defining all outlets locations with `CLIP_GAUGE`
 
@@ -184,7 +394,7 @@ This process uses the `CLIP_GAUGE` style. Here is the step-by-step guide:
 1. Configure the CLIP_GAUGE Control File
 You will need to run EF5 with a temporary control file specifically for this task.
 
-- A sample file is provided in this folder:  [`/Resources/ef5_clip_gauge_sample.txt`]. Use it as your starting point.
+- A sample file is provided in this folder:  [`Resources/ef5_clip_gauge_sample.txt`](Resources/ef5_clip_gauge_sample.txt). Use it as your starting point.
 - In the [Task] block, ensure the run style is set to CLIP_GAUGE.
 
 ```
@@ -198,6 +408,7 @@ PET=CLIMO
 OUTPUT=/outputs/ 
 PARAM_SET=myCREST
 ROUTING_PARAM_Set=myKinematicWave
+defaultparamsgauge=0
 TIMESTEP=30u
 TIME_BEGIN=202406210000
 TIME_END=202406210400
@@ -287,28 +498,36 @@ The process will finish by printing an error message to the screen. **This is no
 
 ### Step 7: Create the CREST parameters
 
-At this point, you should have the soil texture rasters clipped and regridded for your area domain (see Step 4 in this guide). Place them into a folder `CREST_input`. The expected files in this folder are:
+At this point, you should have the soil texture rasters clipped and regridded for your area domain (See Step 4 in this guide). The input folder must contain these 15 files:
 
-`BDRICM_M.tif      
-CLYPPT_M_sl3.tif  
-CLYPPT_M_sl6.tif  
-SNDPPT_M_sl2.tif  
-SNDPPT_M_sl5.tif
-CLYPPT_M_sl1.tif  
-CLYPPT_M_sl4.tif  
-CLYPPT_M_sl7.tif  
-SNDPPT_M_sl3.tif  
-SNDPPT_M_sl6.tif
-CLYPPT_M_sl2.tif  
-CLYPPT_M_sl5.tif  
-SNDPPT_M_sl1.tif  
-SNDPPT_M_sl4.tif  
-SNDPPT_M_sl7.tif`
+- Sand: `SNDPPT_M_sl1_250m.tif` through `SNDPPT_M_sl7_250m.tif`.
+- Clay: `CLYPPT_M_sl1_250m.tif` through `CLYPPT_M_sl7_250m.tif`.
+- Bedrock depth: `BDRICM_M_250m.tif`.
 
-Use the following notebook and follow its instructions:
-- **Notebook:** [`/Codes/4_Crest_parameters_estimation.ipynb`](/Codes/4_Crest_parameters_estimation.ipynb)
+Run [Example/Example_notebooks/7_Crest_parameters_library.ipynb](Example/Example_notebooks/7_Crest_parameters_library.ipynb) for the Ghana example, or call:
 
-The outputs will help you to fill out the next block in the control file:
+```python
+from ef5_builder import get_crest_parameters
+
+outputs = get_crest_parameters(
+    input_dir="data/soilgrids_aligned",
+    output_dir="data/parameters/crest",
+    dem="data/basic/dem.tif",
+    overwrite=False,
+)
+```
+
+The function creates `crest_Wm.tif`, `crest_Fc_Ksat.tif`, and `crest_b.tif`. With `dem` supplied, it also fills small isolated and coastal gaps and saves `crest_diagnostics/crest_filled_mask.tif` beside the parameter folder to show where filling occurred. Larger gaps may remain. Existing files require `overwrite=True`.
+
+#### Impervious surface layer
+
+Run [Example/Example_notebooks/7b_Impervious_layer_processing.ipynb](Example/Example_notebooks/7b_Impervious_layer_processing.ipynb) to prepare `crest_IM.tif` for Ghana using **GMIS 2010**. The notebook finds the official **250 m** tiles intersecting the DEM bounds through [NASA Earthdata](https://search.earthdata.nasa.gov/search/granules?p=C3550185860-ESDIS).
+
+Earthdata file downloads require a login token. Enter it in the notebook's hidden prompt, or download the listed ZIP files manually after signing in. Your PPS email for IMERG is not an Earthdata token.
+
+The output stays at the source's **250 m pixel size**, in percent (0–100), without averaging to the DEM grid. The DEM defines the area and mask. Values outside the built-up mask become 0%; missing cells can be filled with nearest-neighbor estimates. A separate mask in `Example/posproc_outputs/crest_diagnostics/` shows those estimates. Source files remain unchanged. See [impervious-layer technical details](docs/impervious.md) for codes, source access, and limitations.
+
+Once you get IM layer, the outputs will help you to fill out the next block in the control file:
 
 **EF5 Control File Block:**
 ```
@@ -317,8 +536,7 @@ wm_grid=/data/Parameters/crest_Wm.tif
 im_grid=/data/Parameters/crest_IM.tif
 fc_grid=/data/Parameters/crest_Fc_Ksat.tif
 b_grid=/data/Parameters/crest_b.tif
-
-gauge=6607500
+gauge=0
 wm=1.0
 b=1.0
 im=0.01
@@ -326,43 +544,75 @@ ke=1.0
 fc=1.0
 iwu=0
 ```
+---
 
-❗**Impervious Layer**
+### Optional: Keep lake cells as NoData
 
-You should have noticed that there is not `crest_IM.tif` file in the outputs folder. It is not necessary to calculate the impervious layer because there are  multiple satellite products available for this, just make sure the units are in percentage. In this case we use the [Global Man-made Impervious Surface (GMIS) Dataset From Landsat](https://search.earthdata.nasa.gov/search/granules?p=C3550185860-ESDIS&pg[0][v]=f&pg[0][gsk]=-start_date&q=GMIS&tl=1278028800!3!!). Please read the documentation of this product and process it according to that. We include a notebook to help with this process: 
-- **Notebook:** [`/Codes/4b_IM_layer_processing.ipynb`](/Codes/4b_IM_layer_processing.ipynb)
+Pass your region's lake **polygon** layer when creating the parameters:
+
+```python
+outputs = get_crest_parameters(
+    input_dir="data/soilgrids_aligned",
+    output_dir="data/parameters/crest",
+    dem="data/basic/dem.tif",
+    lakes="data/lakes.gpkg",
+)
+```
+
+The function masks lake cells first, then fills all remaining missing SoilGrids cells inside the DEM using their nearest valid land neighbor. Lakes remain NoData and cannot supply values to nearby cells. Large gaps may use distant neighbors; inspect the results. Invalid lake polygons are repaired on a copy; your source files are preserved. A shapefile or GeoDataFrame is also accepted. Do not use lake pour points.
+
+Omit `lakes` or set `lakes=None` to process as before. When providing lakes, also provide `dem`. The Ghana example uses `Example/useful_datasets/hydrolakes/ghana_hydrosheds.shp`. See [technical details](docs/crest.md) for masking and filling rules.
 
 ---
 
 ### Step 8: Create the Kinematic Wave (KW) Parameters
 
-The final step is to compute the routing parameters required for the Kinematic Wave model. To do this, you must prepare a set of input grids. Place the following files into the folder: `/codes/KW_parameters/inputs_grids/`
+The final step is to compute the routing parameters required for the Kinematic Wave model. Use `get_kw_parameters` for alpha and beta and `get_kw_alpha0_from_dem` for ALPHA0 from aligned Manning and DEM rasters.
 
-Required files:
+```python
+from ef5_builder import get_kw_parameters, get_kw_alpha0_from_dem
 
-`basin.area.tif
-dem.tif
-fam.tif
-manning_n.tif
-mean_precip.avg.tif
-mean_temp.avg.tif
-relief.ratio.tif`
+kw_alpha_beta = get_kw_parameters(
+    basin_area="basin.area.tif",
+    temperature="mean_temp.avg.tif",
+    precipitation="mean_precip.avg.tif",
+    relief_ratio="relief.ratio.tif", 
+    flow_accumulation="fac.tif", 
+    output_dir="outputs/kw",
+    precipitation_units="mm/year",  # Ghana example; select the actual input units.
+    self_fam=True,  # Set to match SELFFAM for your FAC raster.
+    layer_th=2,  # Default prediction threshold.
+    overwrite=True,
+)
 
->❗**Important:**
-> Ensure the filenames match exactly. EF5 may generate average grid files with names like mean_precip.tif.avg.tif. If this happens, rename the files accordingly so they match the expected input format.
+alpha0 = get_kw_alpha0_from_dem(
+    manning="manning_n_2001.tif", 
+    dem="dem.tif", 
+    output_dir="outputs/kw", 
+    min_slope=None,
+    overwrite=True,
+)
 
-Open and follow the instructions in the following Jupyter notebook to compute the KW parameters:
+print(f'Control-file TH must exceed {kw_alpha_beta["layer_th"]}')
+```
 
-- **Notebook:** [`/Codes/5_KM_parameters/5_Kinematic_Wave_Parameter_Estimation.ipynb`](/Codes/5_KM_parameters/5_Kinematic_Wave_Parameter_Estimation.ipynb)
+Inputs must already be aligned. Temperature units must be °C and Precipitation must be in mm/month, specify your precipitation units with precipitation_units so the library can automatically convert to the needed units by the kinematic wave model. 
+With min_slope=None, flat terrain and incomplete slope neighborhoods become NoData. See [KW details](docs/kinematic_wave.md) for input requirements, clipping, model compatibility and returned paths.
+ALPHA0 uses **Horn 3×3 terrain slope**, estimated from the DEM's local X and Y
+gradients.
+
+For Ghana example, follow the notebook
+[8_Get_KinematicWave_parameters.ipynb](Example/Example_notebooks/8_Get_KinematicWave_parameters.ipynb).
+
 
 The outputs will help you to fill out the next block in the control file:
 
 **EF5 Control File Block:**
 ```
 [kwparamset MyKW]
-alpha_grid=parameters/alpha_kw.tif
-beta_grid=parameters/beta_kw.tif
-alpha0_grid=parameters/alpha0_kw.tif
+alpha_grid=outputs/kw/kw_alpha.tif
+beta_grid=outputs/kw/kw_beta.tif
+alpha0_grid=outputs/kw/kw_alpha0.tif
 under_grid=parameters/crest_Fc_Ksat.tif
 gauge=0
 alpha=1.0
@@ -373,8 +623,37 @@ leaki=0.03
 th=12.0
 isu=0.0
 ```
+### Final Step: Run your Simulations.
+
+Set `STYLE=SIMU` in your final control file to run a hydrologic simulation. The task selects the water balance model (`CREST`), routing method (`KW`), basin, forcing blocks, and parameter sets prepared in the previous steps. `OUTPUT` sets the results directory. `TIMESTEP=30u` means a 30-minute model step, and `TIME_BEGIN` / `TIME_END` define the simulation period using 12-digit timestamps (year, month, day, hour, minute). `OUTPUT_GRIDS` selects raster results, with multiple variables separated by `|`. See the [official EF5 task-block documentation](https://ef5docs.readthedocs.io/en/latest/tasks.html).
+
+Add the following blocks after your model parameter blocks. The example assumes `[Basin 0]`, `[PrecipForcing IMERG]`, `[PETForcing FAO_PET]`, `[CrestParamSet MyCREST]`, and `[kwparamset MyKW]` are already defined. Adjust these names, dates, and output path to match your configuration.
+
+```ini
+[Task RunSimulation]
+STYLE=SIMU
+MODEL=CREST
+ROUTING=KW
+BASIN=0
+PRECIP=IMERG
+PET=FAO_PET
+PARAM_SET=MyCREST
+ROUTING_PARAM_SET=MyKW
+OUTPUT=Example/posproc_outputs/simulations/
+OUTPUT_GRIDS=STREAMFLOW|MAXUNITSTREAMFLOW|MAXSTREAMFLOW|PRECIPACCUM
+TIMESTEP=30u
+TIME_BEGIN=202506010030
+TIME_END=202506080100
+
+[Execute]
+TASK=RunSimulation
+```
+
+The `[Execute]` block selects `RunSimulation` for execution. Save the complete control file as `control.txt`, create the output directory, and run the following command from the repository root with the EF5 executable on your PATH. See [Running EF5](https://ef5docs.readthedocs.io/en/latest/running.html#run-ef5-in-the-terminal).
+
+```bash
+ef5 control.txt
+```
+
 # Cite this package as
-Robledo, V., Henao, S., Vergara, H. (2025). A Complete Guide to Constructing and Implementing an EF5 Model from Scratch. (v1.0). https://doi.org/10.5281/zenodo.15644400
-
-
-
+Robledo, V., Mehta, N., Henao, S., Vergara, H. (2026). EF5 Builder Toolkit: A Complete Guide to Constructing and Implementing an EF5 Model from Scratch. (v2.0)https://doi.org/10.5281/zenodo.24293720

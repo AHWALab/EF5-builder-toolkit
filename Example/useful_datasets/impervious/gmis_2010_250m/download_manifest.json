@@ -1,0 +1,32 @@
+{
+  "dataset": "GMIS 2010 v1",
+  "collection_id": "C3550185860-ESDIS",
+  "dem_bounds": [
+    -5.35833333333334,
+    4.73333333333332,
+    2.2749999999999906,
+    14.86666666666665
+  ],
+  "tiles": [
+    {
+      "tile": "30N",
+      "filename": "30N_gmis_impervious_surface_percentage_geographic_250m.zip",
+      "url": "https://data.earthdata.nasa.gov/nasa-earth/human-dimensions/sedac-root/downloads/data/ulandsat/ulandsat-gmis-v1/30N_gmis_impervious_surface_percentage_geographic_250m.zip"
+    },
+    {
+      "tile": "30P",
+      "filename": "30P_gmis_impervious_surface_percentage_geographic_250m.zip",
+      "url": "https://data.earthdata.nasa.gov/nasa-earth/human-dimensions/sedac-root/downloads/data/ulandsat/ulandsat-gmis-v1/30P_gmis_impervious_surface_percentage_geographic_250m.zip"
+    },
+    {
+      "tile": "31N",
+      "filename": "31N_gmis_impervious_surface_percentage_geographic_250m.zip",
+      "url": "https://data.earthdata.nasa.gov/nasa-earth/human-dimensions/sedac-root/downloads/data/ulandsat/ulandsat-gmis-v1/31N_gmis_impervious_surface_percentage_geographic_250m.zip"
+    },
+    {
+      "tile": "31P",
+      "filename": "31P_gmis_impervious_surface_percentage_geographic_250m.zip",
+      "url": "https://data.earthdata.nasa.gov/nasa-earth/human-dimensions/sedac-root/downloads/data/ulandsat/ulandsat-gmis-v1/31P_gmis_impervious_surface_percentage_geographic_250m.zip"
+    }
+  ]
+}

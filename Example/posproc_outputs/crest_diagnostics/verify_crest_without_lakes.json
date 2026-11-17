@@ -1,0 +1,39 @@
+{
+  "ok": false,
+  "domain_cells": 599591,
+  "lake_cells": 0,
+  "land_cells": 599591,
+  "lakes_provided": false,
+  "layers": {
+    "wm": {
+      "path": "/Volumes/Humberto/Vanessa/FF_climo/phase0_Building_models/EF5-builder-toolkit/Ghana_example/outputs/crest_parameters/crest_Wm.tif",
+      "format_issues": [],
+      "missing_land_cells": 8605,
+      "invalid_value_cells": 0,
+      "lake_data_cells": 0,
+      "outside_domain_data_cells": 0,
+      "nonfinite_land_cells": 0,
+      "ok": false
+    },
+    "fc": {
+      "path": "/Volumes/Humberto/Vanessa/FF_climo/phase0_Building_models/EF5-builder-toolkit/Ghana_example/outputs/crest_parameters/crest_Fc_Ksat.tif",
+      "format_issues": [],
+      "missing_land_cells": 8605,
+      "invalid_value_cells": 0,
+      "lake_data_cells": 0,
+      "outside_domain_data_cells": 0,
+      "nonfinite_land_cells": 0,
+      "ok": false
+    },
+    "b": {
+      "path": "/Volumes/Humberto/Vanessa/FF_climo/phase0_Building_models/EF5-builder-toolkit/Ghana_example/outputs/crest_parameters/crest_b.tif",
+      "format_issues": [],
+      "missing_land_cells": 8605,
+      "invalid_value_cells": 0,
+      "lake_data_cells": 0,
+      "outside_domain_data_cells": 0,
+      "nonfinite_land_cells": 0,
+      "ok": false
+    }
+  }
+}

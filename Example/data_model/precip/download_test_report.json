@@ -1,0 +1,537 @@
+{
+  "imerg_final": {
+    "start_utc": "2025-06-01 00:00:00",
+    "end_utc": "2025-06-01 01:00:00",
+    "bounds": [
+      -5.35833333333334,
+      4.73333333333332,
+      2.2749999999999906,
+      14.86666666666665
+    ],
+    "tested_at_utc": "2026-10-29T11:29:40.832719+00:00",
+    "status": "passed",
+    "file_count": 2,
+    "files": [
+      {
+        "file": "imerg.202506010030.tif",
+        "shape": [
+          102,
+          77
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:30:00+00:00",
+        "source_url": "https://arthurhouhttps.pps.eosdis.nasa.gov/gpmdata/2025/06/01/gis/3B-HHR-GIS.MS.MRG.3IMERG.20250601-S000000-E002959.0000.V07B.tif",
+        "valid_cells": 7854,
+        "minimum": 0.0,
+        "maximum": 12.199999809265137
+      },
+      {
+        "file": "imerg.202506010100.tif",
+        "shape": [
+          102,
+          77
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T01:00:00+00:00",
+        "source_url": "https://arthurhouhttps.pps.eosdis.nasa.gov/gpmdata/2025/06/01/gis/3B-HHR-GIS.MS.MRG.3IMERG.20250601-S003000-E005959.0030.V07B.tif",
+        "valid_cells": 7854,
+        "minimum": 0.0,
+        "maximum": 11.0
+      }
+    ],
+    "elapsed_seconds": 36.44
+  },
+  "imerg_early": {
+    "start_utc": "2025-06-01 00:00:00",
+    "end_utc": "2025-06-01 01:00:00",
+    "bounds": [
+      -5.35833333333334,
+      4.73333333333332,
+      2.2749999999999906,
+      14.86666666666665
+    ],
+    "tested_at_utc": "2026-10-29T11:30:18.951462+00:00",
+    "status": "passed",
+    "file_count": 2,
+    "files": [
+      {
+        "file": "imerg.202506010030.tif",
+        "shape": [
+          102,
+          77
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:30:00+00:00",
+        "source_url": "https://jsimpsonhttps.pps.eosdis.nasa.gov/imerg/gis/early/2025/06/3B-HHR-E.MS.MRG.3IMERG.20250601-S000000-E002959.0000.V07B.30min.tif",
+        "valid_cells": 7854,
+        "minimum": 0.0,
+        "maximum": 8.199999809265137
+      },
+      {
+        "file": "imerg.202506010100.tif",
+        "shape": [
+          102,
+          77
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T01:00:00+00:00",
+        "source_url": "https://jsimpsonhttps.pps.eosdis.nasa.gov/imerg/gis/early/2025/06/3B-HHR-E.MS.MRG.3IMERG.20250601-S003000-E005959.0030.V07B.30min.tif",
+        "valid_cells": 7854,
+        "minimum": 0.0,
+        "maximum": 9.199999809265137
+      }
+    ],
+    "elapsed_seconds": 38.81
+  },
+  "mrms_rate": {
+    "start_utc": "2025-06-01 00:00:00",
+    "end_utc": "2025-06-01 01:00:00",
+    "bounds": [
+      -95,
+      40,
+      -93,
+      42
+    ],
+    "tested_at_utc": "2026-10-29T11:41:06.014962+00:00",
+    "status": "passed",
+    "file_count": 30,
+    "files": [
+      {
+        "file": "mrms.rate.202506010000.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:00:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-000000.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010002.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:02:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-000200.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010004.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:04:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-000400.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010006.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:06:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-000600.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010008.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:08:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-000800.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010010.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:10:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-001000.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010012.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:12:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-001200.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010014.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:14:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-001400.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010016.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:16:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-001600.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010018.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:18:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-001800.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010020.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:20:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-002000.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010022.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:22:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-002200.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010024.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:24:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-002400.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010026.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:26:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-002600.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010028.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:28:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-002800.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010030.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:30:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-003000.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010032.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:32:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-003200.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010034.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:34:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-003400.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010036.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:36:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-003600.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 0.7000000476837158
+      },
+      {
+        "file": "mrms.rate.202506010038.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:38:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-003800.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 0.7000000476837158
+      },
+      {
+        "file": "mrms.rate.202506010040.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:40:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-004000.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 0.7000000476837158
+      },
+      {
+        "file": "mrms.rate.202506010042.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:42:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-004200.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010044.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:44:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-004400.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010046.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:46:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-004600.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010048.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:48:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-004800.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010050.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:50:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-005000.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010052.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:52:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-005200.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010054.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:54:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-005400.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010056.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:56:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-005600.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      },
+      {
+        "file": "mrms.rate.202506010058.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm/h",
+        "timestamp_utc": "2025-06-01T00:58:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/PrecipRate/PrecipRate_00.00_20250601-005800.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      }
+    ],
+    "elapsed_seconds": 824.56
+  },
+  "mrms_pass1": {
+    "start_utc": "2025-06-01 00:00:00",
+    "end_utc": "2025-06-01 01:00:00",
+    "bounds": [
+      -95,
+      40,
+      -93,
+      42
+    ],
+    "tested_at_utc": "2026-10-29T11:54:52.127666+00:00",
+    "status": "failed",
+    "error_type": "FileNotFoundError",
+    "error": "No archived precipitation file: https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/MultiSensor_QPE_01H_Pass1/MultiSensor_QPE_01H_Pass1_00.00_20250601-000000.grib2.gz",
+    "completed_files": [],
+    "elapsed_seconds": 4.91
+  },
+  "mrms_pass2": {
+    "start_utc": "2025-06-01 00:00:00",
+    "end_utc": "2025-06-01 01:00:00",
+    "bounds": [
+      -95,
+      40,
+      -93,
+      42
+    ],
+    "tested_at_utc": "2026-10-29T11:55:01.414552+00:00",
+    "status": "passed",
+    "file_count": 1,
+    "files": [
+      {
+        "file": "mrms.pass2.202506010000.tif",
+        "shape": [
+          201,
+          201
+        ],
+        "units": "mm",
+        "timestamp_utc": "2025-06-01T00:00:00+00:00",
+        "source_url": "https://mtarchive.geol.iastate.edu/2025/06/01/mrms/ncep/MultiSensor_QPE_01H_Pass2/MultiSensor_QPE_01H_Pass2_00.00_20250601-000000.grib2.gz",
+        "valid_cells": 40401,
+        "minimum": 4.470348358154297e-08,
+        "maximum": 4.470348358154297e-08
+      }
+    ],
+    "elapsed_seconds": 30.22
+  }
+}
