@@ -655,4 +655,4 @@ ef5 control.txt
 ```
 
 # Cite this package as
-Robledo, V., Mehta, N., Henao, S., Vergara, H. (2026). EF5 Builder Toolkit: A Complete Guide to Constructing and Implementing an EF5 Model from Scratch. (v2.0)https://doi.org/10.5281/zenodo.24293720
+Robledo, V., Mehta, N., Henao, S., Vergara, H. (2026). EF5 Builder Toolkit: A Complete Guide to Constructing and Implementing an EF5 Model from Scratch. (v2.0)[https://doi.org/10.5281/zenodo.24293720](https://zenodo.org/records/24293720)
